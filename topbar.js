@@ -11,7 +11,7 @@ const KILL_GRADE = {
 const STARTING_OPS = {"Angels of Death":[6],"Battleclade":[10],"Blades of Khaine":[8],"Brood Brothers":[13,11,10,12],"Canoptek Circle":[5],"Celestian Insidiants":[9],"Chaos Cult":[14],"Deathwatch":[5],"Exaction Squad":[11],"Exodite Dragon Masters":[5],"Farstalker Kinband":[12],"Fellgor Ravagers":[10],"Goremongers":[8],"Hand of the Archon":[9],"Hearthkyn Salvagers":[10],"Hernkyn Yaegirs":[10],"Hierotek Circle":[8],"Imperial Navy Breachers":[11,10],"Inquisitorial Agents":[11,10,12],"Kasrkin":[10],"Mandrakes":[9],"Murderwing":[6],"Nemesis Claw":[6],"Plague Marines":[6],"Ratlings":[11],"Raveners":[5],"Sanctifiers":[11],"Scout Squad":[9],"Spectre Squad":[10],"Tempestus Aquilons":[11],"Vespid Stingwings":[10],"Wolf Scouts":[6],"Wrecka Krew":[6],"XV26 Stealth Battlesuits":[5]};
 
 const blankSide = () => ({ team: '', startingOperatives: '', operativesRemaining: 0, scores: { cp: 3, crit: 0, tac: 0 } });
-const state = { turningPoint: 0, battleEnded: false, initiative: 'left', left: blankSide(), right: blankSide() };
+const state = { turningPoint: 0, battleEnded: false, initiative: 'left', critOp: '', left: blankSide(), right: blankSide() };
 
 const rawKill = p => {
   const o = state[p === 'left' ? 'right' : 'left'];
@@ -41,6 +41,7 @@ function render() {
     }
   });
   $('[data-v="tp"]').textContent = state.turningPoint;
+  $('.critop').textContent = state.critOp;
   const ini = state.initiative === 'right' ? '2' : '1';
   document.querySelectorAll('[data-init]').forEach(e => e.classList.toggle('on', e.dataset.init === ini));
 }
@@ -66,7 +67,7 @@ function startLive(game) {
       c.on('data', m => {
         if (m.type !== 'state' || !m.state || !m.state.left || !m.state.right) return;
         const st = m.state;
-        state.turningPoint = st.turningPoint; state.battleEnded = !!st.battleEnded; state.initiative = st.initiative;
+        state.turningPoint = st.turningPoint; state.battleEnded = !!st.battleEnded; state.initiative = st.initiative; state.critOp = st.critOp || '';
         ['left', 'right'].forEach(p => Object.assign(state[p], st[p], { scores: Object.assign({}, st[p].scores) }));
         render();
       });
