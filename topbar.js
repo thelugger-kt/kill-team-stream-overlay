@@ -74,14 +74,14 @@ function hostPeerId(game) {
 
 function startLive(game) {
   const id = hostPeerId(game);
-  let peer, timer;
-  const retry = () => { clearTimeout(timer); timer = setTimeout(connect, 3000); };
+  let peer, timer, poll;
+  const retry = () => { clearInterval(poll); clearTimeout(timer); timer = setTimeout(connect, 3000); };
   function connect() {
     try { if (peer) peer.destroy(); } catch (e) {}
     peer = new Peer();
     peer.on('open', () => {
       const c = peer.connect(id, { reliable: true });
-      c.on('open', () => c.send({ type: 'request-state' }));
+      c.on('open', () => { c.send({ type: 'request-state' }); clearInterval(poll); poll = setInterval(() => c.open && c.send({ type: 'request-state' }), 5000); });
       c.on('data', m => {
         if (m.type !== 'state' || !m.state || !m.state.left || !m.state.right) return;
         const st = m.state;
