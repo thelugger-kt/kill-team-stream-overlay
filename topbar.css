@@ -14,7 +14,7 @@ body{font-family:"Oswald","Bebas Neue","Arial Narrow",Impact,sans-serif;font-wei
 .bar{position:absolute;left:240px;top:0;width:1440px;height:136px}
 .side{position:absolute;top:0;width:620px;height:104px;display:flex}
 .side.l{left:0}.side.r{right:0;flex-direction:row-reverse}
-.team{width:120px;display:flex;align-items:center;justify-content:center;background:var(--o)}
+.team{width:120px;display:flex;align-items:center;justify-content:center;background:#ff2727}
 .r .team{background:var(--b)}
 .team img{max-width:112px;max-height:96px;filter:brightness(0) invert(1)}
 .scores{display:flex}.r .scores{flex-direction:row-reverse}
