@@ -1,9 +1,5 @@
 ﻿// Live overlay for the Kill Team Scorecard.
-// Pass the scorecard's own query string (game=..., tp=..., leftKill=...), e.g.
-//   topbar-a.html?game=match-murlao6g-k8gqu0
-// The URL values are shown first; if `game` is present the page joins the scorecard's
-// PeerJS room as a read-only client and updates in real time.
-// Optional: player1 / player2 (names are not part of the scorecard state), preview=1 (camera mock-up).
+// Only needs ?game=<id> (optionally player1 / player2, preview=1); all scores are received live over PeerJS.
 const q = new URLSearchParams(location.search);
 const $ = s => document.querySelector(s);
 const num = (v, d = 0) => { const n = Number(v); return Number.isFinite(n) ? n : d; };
@@ -16,21 +12,6 @@ const STARTING_OPS = {"Angels of Death":[6],"Battleclade":[10],"Blades of Khaine
 
 const blankSide = () => ({ team: '', startingOperatives: '', operativesRemaining: 0, scores: { cp: 3, crit: 0, tac: 0 } });
 const state = { turningPoint: 0, battleEnded: false, initiative: 'left', left: blankSide(), right: blankSide() };
-
-function fromUrl() {
-  state.turningPoint = Math.max(0, Math.min(4, num(q.get('tp'))));
-  state.battleEnded = q.get('battleEnded') === 'true' || num(q.get('tp')) >= 5;
-  state.initiative = q.get('initiative') === 'right' ? 'right' : 'left';
-  ['left', 'right'].forEach(p => {
-    const s = state[p];
-    s.team = q.get(p + 'Team') || '';
-    s.startingOperatives = (STARTING_OPS[s.team] || [''])[0];
-    s.operativesRemaining = q.has(p + 'Remaining') ? num(q.get(p + 'Remaining')) : num(s.startingOperatives);
-    s.scores.cp = q.has(p + 'Cp') ? num(q.get(p + 'Cp')) : 3;
-    s.scores.crit = num(q.get(p + 'Crit'));
-    s.scores.tac = num(q.get(p + 'Tac'));
-  });
-}
 
 const rawKill = p => {
   const o = state[p === 'left' ? 'right' : 'left'];
@@ -103,7 +84,6 @@ if (q.get('preview') === '1') {
   cam.className = 'cam';
   $('.stage').prepend(cam);
 }
-fromUrl();
 render();
 const game = q.get('game');
 if (game && window.Peer) startLive(game);
@@ -132,10 +112,10 @@ function askForGame() {
     try { src = new URL(raw).searchParams; }
     catch (err) { src = raw.includes('=') ? new URLSearchParams(raw.replace(/^\?/, '')) : new URLSearchParams({ game: raw }); }
     if (!src.get('game')) { url.style.borderColor = '#f33'; return; }
-    src.delete('player1'); src.delete('player2');
+    const gameId = src.get('game');
+    src = new URLSearchParams({ game: gameId });
     if (p1.value.trim()) src.set('player1', p1.value.trim());
     if (p2.value.trim()) src.set('player2', p2.value.trim());
-    if (q.has('preview')) src.set('preview', q.get('preview'));
     localStorage.setItem('ktOverlayUrl', raw);
     localStorage.setItem('ktOverlayP1', p1.value.trim());
     localStorage.setItem('ktOverlayP2', p2.value.trim());
