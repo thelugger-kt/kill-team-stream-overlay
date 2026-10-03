@@ -1,0 +1,53 @@
+﻿:root{--o:#e8601c;--k:#0b0b0b;--b:#2f6bff;--cell:#151515}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:transparent}
+body{font-family:"Oswald","Bebas Neue","Arial Narrow",Impact,sans-serif;font-weight:700;color:#fff;position:relative}
+
+/* full-width camera; black strip across the top holds the bar (1440px centred) with a 240px logo slot either side */
+.stage{position:absolute;inset:0}
+.cam{position:absolute;inset:0;background:url(assets/example-cam.jpg) center/cover}
+.strip{position:absolute;left:0;top:0;width:1920px;height:136px;background:var(--k)}
+.logo{position:absolute;top:0;width:240px;height:136px;display:flex;align-items:center;justify-content:center;font-size:22px;letter-spacing:3px;color:rgba(255,255,255,.3);outline:2px dashed rgba(255,255,255,.2);outline-offset:-6px}
+.logo.l{left:0}.logo.r{right:0}
+.logo img{position:absolute;inset:8px;width:calc(100% - 16px);height:calc(100% - 16px);object-fit:contain;background:#000}
+
+.bar{position:absolute;left:240px;top:0;width:1440px;height:136px}
+.side{position:absolute;top:0;width:620px;height:104px;display:flex}
+.side.l{left:0}.side.r{right:0;flex-direction:row-reverse}
+.team{width:120px;display:flex;align-items:center;justify-content:center;background:var(--o)}
+.r .team{background:var(--b)}
+.team img{max-width:112px;max-height:96px;filter:brightness(0) invert(1)}
+.scores{display:flex}.r .scores{flex-direction:row-reverse}
+.cell{width:125px;text-align:center;padding-top:6px;background:var(--cell);border-right:2px solid rgba(255,255,255,.08)}
+.r .cell{border-right:0;border-left:2px solid rgba(255,255,255,.08)}
+.cell .lb{font-size:24px;line-height:1;letter-spacing:2px;opacity:.85}
+.cell .v{font-size:64px;line-height:1.1}
+.tp{position:absolute;left:620px;top:0;width:200px;height:104px;background:var(--o);text-align:center}
+.tp .lb{font-size:24px;margin-top:6px;letter-spacing:2px;white-space:nowrap}.tp .v{font-size:68px;line-height:1.05}
+.names{position:absolute;top:104px;width:720px;height:32px;line-height:32px;display:flex;justify-content:space-between;font-size:24px;font-weight:700;white-space:nowrap}
+.names.l{left:0;padding:0 130px 0 14px}.names.r{right:0;padding:0 14px 0 130px;flex-direction:row-reverse}
+.names .f{color:var(--o)}
+
+/* bottom variant: bar at the bottom, names above the scores */
+body.bottom .bar,body.bottom .strip,body.bottom .logo{top:auto;bottom:0}
+body.bottom .names{top:0}
+body.bottom .side,body.bottom .tp{top:32px}
+
+.names{box-sizing:border-box}
+
+
+/* initiative: centred label under the turning point box, one glowing triangle for the holder, the other hidden */
+.initbar{position:absolute;left:590px;top:104px;width:260px;height:32px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:24px;font-weight:700;letter-spacing:.5px}
+.tri{width:30px;height:20px;background:var(--o);visibility:hidden;filter:drop-shadow(0 0 5px var(--o)) drop-shadow(0 0 12px var(--o))}
+.tri.on{visibility:visible}
+.tri[data-init="1"]{clip-path:polygon(100% 0,100% 100%,0 50%)}
+.tri[data-init="2"]{clip-path:polygon(0 0,0 100%,100% 50%)}
+body.bottom .initbar{top:0}
+
+
+*{font-family:"Oswald","Bebas Neue","Arial Narrow",Impact,sans-serif;font-weight:700}
+
+
+/* shared label style: scoring labels, TURN and INITIATIVE */
+.cell .lb,.tp .lb,.initbar b{font-size:24px;line-height:1;letter-spacing:2px;font-weight:700;opacity:1;text-transform:uppercase}
+.initbar{letter-spacing:2px}
