@@ -54,3 +54,7 @@ body.bottom .initbar{top:0}
 
 .critop{position:absolute;left:490px;width:460px;top:136px;padding-top:4px;text-align:center;font-size:30px;line-height:1.1;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:#fff;background:none;text-shadow:0 2px 4px #000,0 0 8px rgba(0,0,0,.8)}
 body.bottom .critop{top:auto;bottom:136px;padding:0 0 4px}
+
+.tacop{position:absolute;width:420px;top:136px;padding-top:4px;font-size:30px;line-height:1.1;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:#fff;background:none;text-shadow:0 2px 4px #000,0 0 8px rgba(0,0,0,.8)}
+.tacop.l{left:14px;text-align:left}.tacop.r{right:14px;text-align:right}
+body.bottom .tacop{top:auto;bottom:136px;padding:0 0 4px}

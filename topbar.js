@@ -10,7 +10,7 @@ const KILL_GRADE = {
 };
 const STARTING_OPS = {"Angels of Death":[6],"Battleclade":[10],"Blades of Khaine":[8],"Brood Brothers":[13,11,10,12],"Canoptek Circle":[5],"Celestian Insidiants":[9],"Chaos Cult":[14],"Deathwatch":[5],"Exaction Squad":[11],"Exodite Dragon Masters":[5],"Farstalker Kinband":[12],"Fellgor Ravagers":[10],"Goremongers":[8],"Hand of the Archon":[9],"Hearthkyn Salvagers":[10],"Hernkyn Yaegirs":[10],"Hierotek Circle":[8],"Imperial Navy Breachers":[11,10],"Inquisitorial Agents":[11,10,12],"Kasrkin":[10],"Mandrakes":[9],"Murderwing":[6],"Nemesis Claw":[6],"Plague Marines":[6],"Ratlings":[11],"Raveners":[5],"Sanctifiers":[11],"Scout Squad":[9],"Spectre Squad":[10],"Tempestus Aquilons":[11],"Vespid Stingwings":[10],"Wolf Scouts":[6],"Wrecka Krew":[6],"XV26 Stealth Battlesuits":[5]};
 
-const blankSide = () => ({ team: '', startingOperatives: '', operativesRemaining: 0, scores: { cp: 3, crit: 0, tac: 0 } });
+const blankSide = () => ({ tacOp: '', team: '', startingOperatives: '', operativesRemaining: 0, scores: { cp: 3, crit: 0, tac: 0 } });
 const state = { turningPoint: 0, battleEnded: false, initiative: 'left', critOp: '', left: blankSide(), right: blankSide() };
 
 const rawKill = p => {
@@ -31,6 +31,7 @@ function render() {
     set(`[data-v="kill${n}"]`, killScore(p));
     set(`[data-v="tac${n}"]`, s.scores.tac);
     set(`[data-v="cp${n}"]`, s.scores.cp);
+    set(`[data-tacop="${p}"]`, s.tacOp || '');
     set(`[data-team="${n}"]`, s.team.toUpperCase());
     set(`[data-player="${n}"]`, q.get('player' + n) || '');
     const img = $(`[data-icon="${n}"]`);
